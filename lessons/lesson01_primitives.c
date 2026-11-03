@@ -50,7 +50,7 @@ int main(void)
 		// Raylib / OpenGL requires vertices in Counter-Clockwise (CCW) order!
 		// In screen coordinates (+Y points down), (p1, p3, p2) is CCW.
 		DrawTriangle(p1, p3, p2, (Color){ 235, 87, 87, 255 }); // Red-orange fill
-		DrawTriangleLines(p1, p3, p2, RAYWHITE);                // White border
+		DrawTriangleLines(p1, p3, p2, RAYWHITE); // White border
 
 		// Draw vertex points
 		DrawCircleV(p1, 6.0f, YELLOW);

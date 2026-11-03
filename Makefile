@@ -1,19 +1,30 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -I./vendor/raylib/include
-LDFLAGS = -L./vendor/raylib/lib -L./lib -lraylib -lGL -lX11 -lm -lpthread -ldl -lrt -Wl,-rpath,'$$ORIGIN/vendor/raylib/lib:$$ORIGIN/lib'
+LDFLAGS = -L./vendor/raylib/lib -L./lib -lraylib -lGL -lX11 -lm -lpthread -ldl -lrt \
+          -Wl,-rpath,'$$ORIGIN/../vendor/raylib/lib:$$ORIGIN/../lib:$$ORIGIN/vendor/raylib/lib:$$ORIGIN/lib'
 
-TARGET = graphics_app
-SRC = main.c
+SRC_DIR = lessons
+BIN_DIR = bin
 
-all: $(TARGET)
+SRCS = $(wildcard $(SRC_DIR)/*.c)
+BINS = $(patsubst $(SRC_DIR)/%.c, $(BIN_DIR)/%, $(SRCS))
 
-$(TARGET): $(SRC)
-	$(CC) $(CFLAGS) $(SRC) $(LDFLAGS) -o $(TARGET)
+# Default lesson
+LESSON ?= lesson01_primitives
 
-run: $(TARGET)
-	./$(TARGET)
+all: $(BINS)
+
+$(BIN_DIR)/%: $(SRC_DIR)/%.c | $(BIN_DIR)
+	$(CC) $(CFLAGS) $< $(LDFLAGS) -o $@
+
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
+# Run with: `make run` or `make run LESSON=lesson02_transforms`
+run: $(BIN_DIR)/$(LESSON)
+	./$<
 
 clean:
-	rm -f $(TARGET)
+	rm -rf $(BIN_DIR)
 
-.PHONY: all run clean
+.PHONY: all clean run
