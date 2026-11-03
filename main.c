@@ -44,8 +44,13 @@ int main(void)
 		DrawLine(0, centerY, screenWidth, centerY, (Color){ 45, 55, 75, 255 });
 		DrawLine(centerX, 0, centerX, screenHeight, (Color){ 45, 55, 75, 255 });
 
-		// 3. Draw Rotating Triangle (The atom of computer graphics)
-		DrawTriangle(p1, p2, p3, (Color){ 235, 87, 87, 255 }); // Red-orange
+		// 3. Draw Rotating Triangle
+		// NOTE FOR GRAPHICS PROGRAMMERS:
+		// GPUs use "Winding Order" to determine which way a triangle is facing.
+		// Raylib / OpenGL requires vertices in Counter-Clockwise (CCW) order!
+		// In screen coordinates (+Y points down), (p1, p3, p2) is CCW.
+		DrawTriangle(p1, p3, p2, (Color){ 235, 87, 87, 255 }); // Red-orange fill
+		DrawTriangleLines(p1, p3, p2, RAYWHITE);                // White border
 
 		// Draw vertex points
 		DrawCircleV(p1, 6.0f, YELLOW);
@@ -57,10 +62,10 @@ int main(void)
 		DrawCircle((int)mousePos.x, (int)mousePos.y, 4.0f, (Color){ 80, 220, 100, 255 });
 
 		// 5. Informational HUD
-		DrawText("LESSON 1: The Rendering Loop & Coordinate Space", 20, 20, 20, RAYWHITE);
+		DrawText("LESSON 1: The Rendering Loop & Winding Order", 20, 20, 20, RAYWHITE);
 		DrawText("1. Screen Origin (0,0) is at TOP-LEFT", 20, 50, 16, LIGHTGRAY);
-		DrawText("2. Move mouse: watch the green cursor track input", 20, 72, 16, LIGHTGRAY);
-		DrawText("3. Rotating shape: calculated with trigonometry each frame", 20, 94, 16, LIGHTGRAY);
+		DrawText("2. Winding Order: GPU only renders front-facing (CCW) triangles!", 20, 72, 16, LIGHTGRAY);
+		DrawText("3. Move mouse: watch the green cursor track input", 20, 94, 16, LIGHTGRAY);
 
 		// Real-time cursor coordinates
 		DrawText(TextFormat("Mouse Pos: (X: %.0f, Y: %.0f)", mousePos.x, mousePos.y), 20, screenHeight - 35, 16, GREEN);
